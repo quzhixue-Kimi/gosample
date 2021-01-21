@@ -6,6 +6,10 @@ import (
 	"os"
 	"unsafe"
 
+	abc "github.com/quzhixue-Kimi/gosample/mapsample"
+	point "github.com/quzhixue-Kimi/gosample/pointersample"
+	str "github.com/quzhixue-Kimi/gosample/stringsample"
+	s "github.com/quzhixue-Kimi/gosample/structuresample"
 	"github.com/quzhixue-Kimi/stringutil"
 )
 
@@ -329,14 +333,69 @@ func sliceMakeTest() {
 	}
 }
 
+func sliceGc() {
+	countriesNeeded := countries()
+	fmt.Println(countriesNeeded)
+}
+
+func countries() []string {
+	countries := []string{"USA", "Singapore", "Germany", "India", "Australia"}
+	neededCountries := countries[:len(countries)-2]
+	countriesCpy := make([]string, len(neededCountries))
+	copy(countriesCpy, neededCountries) //copies neededCountries to countriesCpy
+
+	countries[0] = "China"
+	fmt.Println(countries)
+	return countriesCpy
+}
+
 func subtactOne(numbers []int) {
 	for i := range numbers {
 		numbers[i] -= 2
 	}
 }
 
-func main() {
+func find(num int, nums ...int) {
+	fmt.Printf("type of nums is %T\n", nums)
+	found := false
+	for i, v := range nums {
+		if v == num {
+			fmt.Println(num, "found at index", i, "in", nums)
+			found = true
+		}
+	}
+	if !found {
+		fmt.Println(num, "not found in ", nums)
+	}
+	fmt.Printf("\n")
+}
 
+func findIndex() {
+	find(89, 89, 90, 95)
+	find(45, 56, 67, 45, 90, 109)
+	find(78, 38, 56, 98)
+	find(87)
+
+	fmt.Println("=================================")
+	n := []int{10, 23, 41}
+	find(41, n...)
+}
+
+func main() {
+	s.StructureInit()
+	s.StructureTest()
+	point.PointerTest()
+	str.PrintBytes("hello world")
+	str.PrintChars("hello world")
+	str.PrintChars("Señor")
+	str.PrintChars1("Señor")
+	str.PrintString("Señor")
+	str.Length("Señor")
+	fmt.Println(str.Mutate([]rune("hello")))
+	// mapsample.MapTest()
+	abc.MapTest()
+	findIndex()
+	sliceGc()
 	sliceMakeTest()
 	sliceTest()
 	multiArray()
@@ -412,6 +471,8 @@ func main() {
 	fmt.Println(str)
 	s := "hel" + "lo,"
 	s += "world!"
+	sp := fmt.Sprintf("Hi man, %s %s %s", "what", "is", "up?")
+	fmt.Println(sp)
 	fmt.Println(s) //输出 “hello, world!”
 	boolTest()
 	intTest()
