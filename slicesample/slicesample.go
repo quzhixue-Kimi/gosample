@@ -64,9 +64,8 @@ func SliceTest1() {
 
 func SliceTest() {
 	arrayA := [2]int{100, 200}
-	var arrayB [2]int
 
-	arrayB = arrayA
+	arrayB := arrayA
 
 	fmt.Printf("arrayA : %p , %v\n", &arrayA, arrayA)
 	fmt.Printf("arrayB : %p , %v\n", &arrayB, arrayB)

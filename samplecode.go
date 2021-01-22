@@ -9,6 +9,7 @@ import (
 	abc "github.com/quzhixue-Kimi/gosample/mapsample"
 	point "github.com/quzhixue-Kimi/gosample/pointersample"
 	sli "github.com/quzhixue-Kimi/gosample/slicesample"
+	"github.com/quzhixue-Kimi/gosample/stringsample"
 	str "github.com/quzhixue-Kimi/gosample/stringsample"
 	s "github.com/quzhixue-Kimi/gosample/structuresample"
 	"github.com/quzhixue-Kimi/stringutil"
@@ -384,6 +385,9 @@ func findIndex() {
 }
 
 func main() {
+	stringsample.SayHello("kimi")
+	str.SayHello("alan")
+	fmt.Println("=========================")
 	sli.SliceCopy()
 	fmt.Println("================================")
 	sli.SliceChange()
