@@ -8,6 +8,7 @@ import (
 
 	abc "github.com/quzhixue-Kimi/gosample/mapsample"
 	point "github.com/quzhixue-Kimi/gosample/pointersample"
+	sli "github.com/quzhixue-Kimi/gosample/slicesample"
 	str "github.com/quzhixue-Kimi/gosample/stringsample"
 	s "github.com/quzhixue-Kimi/gosample/structuresample"
 	"github.com/quzhixue-Kimi/stringutil"
@@ -16,13 +17,14 @@ import (
 // type Weekday int
 
 const (
-	Sunday = iota
-	Monday
-	Tuesday
-	Wednesday
-	Thursday
-	Friday
-	Saturday
+	Sunday    = iota // 0
+	Monday    = 100  // 100
+	Tuesday          // 100
+	Wednesday = 200  // 200
+	Thursday  = iota // 4
+	_                // 5
+	Friday           // 6
+	Saturday         // 7
 )
 
 const typedString string = "how old are you?"
@@ -382,6 +384,25 @@ func findIndex() {
 }
 
 func main() {
+	sli.SliceCopy()
+	fmt.Println("================================")
+	sli.SliceChange()
+	fmt.Println("=======================")
+	sli.SliceScale()
+	fmt.Println("======================")
+	sli.SliceTest2()
+	fmt.Println("================================")
+	sli.SliceTest1()
+	fmt.Println("================================")
+	sli.SliceTest()
+	fmt.Println(Sunday)
+	fmt.Println(Monday)
+	fmt.Println(Tuesday)
+	fmt.Println(Wednesday)
+	fmt.Println(Thursday)
+	fmt.Println(Friday)
+	fmt.Println(Saturday)
+
 	s.StructureInit()
 	s.StructureTest()
 	point.PointerTest()
@@ -423,15 +444,9 @@ func main() {
 	fmt.Println("my age is :", age)
 	age = 10
 	fmt.Println("my age is :", age)
-	fmt.Println(Sunday)
 	age = 21
 	fmt.Println("my age is :", age)
-	fmt.Println(Monday)
-	fmt.Println(Tuesday)
-	fmt.Println(Wednesday)
-	fmt.Println(Thursday)
-	fmt.Println(Friday)
-	fmt.Println(Saturday)
+
 	var width, height int = 100, 50
 	a2, b2 := 102, 103
 	fmt.Println(a2, b2)
