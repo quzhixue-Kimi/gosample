@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"time"
+
+	io "github.com/quzhixue-Kimi/gosample/iosample"
 )
 
 func sendData(ch1 chan int) {
@@ -29,13 +31,25 @@ func readData(ch1 chan int, exit chan bool) {
 }
 
 func main() {
-	ch1 := make(chan int, 5)
+	msg := make(chan string, 10)
 	exit := make(chan bool, 1)
+
+	l := io.NewLogInfo("hello", "Info")
 	for {
-		go sendData(ch1)
-		go readData(ch1, exit)
+		go l.FileCreateOperator(msg)
+		go l.FileReadOperator(msg, exit)
 		if _, ok := <-exit; !ok {
 			break
 		}
 	}
+
+	//ch1 := make(chan int, 5)
+	//exit := make(chan bool, 1)
+	//for {
+	//	go sendData(ch1)
+	//	go readData(ch1, exit)
+	//	if _, ok := <-exit; !ok {
+	//		break
+	//	}
+	//}
 }
