@@ -31,13 +31,14 @@ func readData(ch1 chan int, exit chan bool) {
 }
 
 func main() {
-	msg := make(chan string, 10)
+	msg := make(chan *io.LogInfo, 1)
 	exit := make(chan bool, 1)
 
 	l := io.NewLogInfo("hello", "Info")
+
 	for {
-		go l.FileCreateOperator(msg)
-		go l.FileReadOperator(msg, exit)
+		go l.FileReadOperator(msg)
+		go l.FileCreateOperator(msg, exit)
 		if _, ok := <-exit; !ok {
 			break
 		}
