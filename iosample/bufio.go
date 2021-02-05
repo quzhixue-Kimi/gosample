@@ -14,6 +14,25 @@ type LogInfo struct {
 	level string
 }
 
+func init() {
+	if file, err := os.OpenFile("/tmp/whatisup.txt", os.O_CREATE|os.O_WRONLY, 0644); err != nil {
+		fmt.Printf("Error occurred: %v\n", err)
+	} else {
+		defer file.Close()
+		w1 := bufio.NewWriter(file)
+		message := NewLogInfo("hello", "Info")
+		fmt.Printf("%T, %p\n", message, message)
+		m1 := NewLogInfo("hello", "Info")
+		fmt.Printf("%T, %p\n", m1, m1)
+		fmt.Println(message == m1)
+		if _, err := w1.WriteString(message.String() + "\n"); err != nil {
+			fmt.Printf("Error occurred: %v\n", err)
+		} else {
+			w1.Flush()
+		}
+	}
+}
+
 func NewLogInfo(msg, level string) *LogInfo {
 	return &LogInfo{
 		msg:   msg,
@@ -41,9 +60,11 @@ func (l *LogInfo) FileReadOperator(msg chan *LogInfo) {
 				time.Sleep(time.Millisecond * 500)
 				log := string(data)
 				res := strings.Split(log, "|")
-				l := NewLogInfo(res[0], res[1])
-				fmt.Print(l)
-				msg <- l
+				if len(res) == 2 {
+					l := NewLogInfo(res[0], res[1])
+					fmt.Print(l)
+					msg <- l
+				}
 			}
 		}
 		//for {
