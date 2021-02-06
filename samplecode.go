@@ -1,11 +1,5 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/quzhixue-Kimi/gosample/workpool"
-)
-
 //func sendData(ch1 chan int) {
 //	for i := 0; i < 10; i++ {
 //		ch1 <- i
@@ -31,34 +25,34 @@ import (
 
 func main() {
 
-	jobs := make(chan int, 5)
-	results := make(chan int, 5)
+	//jobs := make(chan int, 5)
+	//results := make(chan int, 5)
 
-	for i := 1; i <= 2; i++ {
-		go workpool.WorkerPool(i, jobs, results)
-	}
-
-	for i := 1; i <= 5; i++ {
-		jobs <- i
-	}
-	close(jobs)
-
-	//for v := range results {
-	//	fmt.Println(v)
+	//for i := 1; i <= 2; i++ {
+	//	go workpool.WorkerPool(i, jobs, results)
 	//}
 
-	//for {
-	//	if v, ok := <-results; !ok {
-	//		break
-	//	} else {
-	//		fmt.Println(v)
-	//	}
+	//for i := 1; i <= 5; i++ {
+	//	jobs <- i
 	//}
+	//close(jobs)
 
-	for i := 1; i <= 5; i++ {
-		x := <-results
-		fmt.Println(x)
-	}
+	////for v := range results {
+	////	fmt.Println(v)
+	////}
+
+	////for {
+	////	if v, ok := <-results; !ok {
+	////		break
+	////	} else {
+	////		fmt.Println(v)
+	////	}
+	////}
+
+	//for i := 1; i <= 5; i++ {
+	//	x := <-results
+	//	fmt.Println(x)
+	//}
 
 	//	selectsample.SelectChannel()
 

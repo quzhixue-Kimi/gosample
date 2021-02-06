@@ -2,6 +2,7 @@ package stringsample
 
 import (
 	"fmt"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -50,4 +51,25 @@ func Length(s string) {
 func Mutate(s []rune) string {
 	s[0] = 'a'
 	return string(s)
+}
+
+func Split(str, sep string) []string {
+	var result = make([]string, 0, strings.Count(str, sep)+1)
+	index := strings.Index(str, sep)
+	for index >= 0 {
+		result = append(result, str[:index])
+		str = str[index+len(sep):]
+		index = strings.Index(str, sep)
+	}
+	result = append(result, str)
+	return result
+}
+
+func Fib(n int) int {
+	if n < 2 {
+		return n
+	} else {
+		return Fib(n-1) + Fib(n-2)
+	}
+
 }
