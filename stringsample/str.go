@@ -6,6 +6,7 @@ import (
 
 func SayHello(name string) {
 	fmt.Printf("%s says hello to you\n", name)
+	testWithinPackage()
 }
 
 func testWithinPackage() {
