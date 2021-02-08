@@ -86,6 +86,7 @@ func queryWithStmt1(id int) {
 				return
 			} else {
 				uList = append(uList, e)
+				//fmt.Println(len(uList), cap(uList))
 			}
 		}
 		if data, err := json.Marshal(uList); err != nil {
@@ -155,5 +156,5 @@ func MySqlSample1() {
 	//exec1(e, true)
 	queryWithStmt1(1)
 	fmt.Println("=======================test tran========================")
-	trans()
+	//trans()
 }
