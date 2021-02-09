@@ -1,0 +1,57 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+
+	"github.com/nsqio/go-nsq"
+)
+
+var producer *nsq.Producer
+
+func main() {
+	InitProducer("127.0.0.1:4150")
+
+	running := true
+
+	reader := bufio.NewReader(os.Stdin)
+	for running {
+		data, _, _ := reader.ReadLine()
+		command := string(data)
+		if command == "stop" {
+			running = false
+		}
+
+		if !running {
+			break
+		}
+
+		if err := Publish("whatisup", command); err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
+	producer.Stop()
+}
+
+func InitProducer(str string) {
+	var err error
+	fmt.Println("address: ", str)
+	producer, err = nsq.NewProducer(str, nsq.NewConfig())
+	if err != nil {
+		panic(err)
+	}
+}
+
+func Publish(topic string, message string) error {
+	var err error
+	if producer != nil {
+		if message == "" { //不能发布空串，否则会导致error
+			return nil
+		}
+		err = producer.Publish(topic, []byte(message)) // 发布消息
+		return err
+	}
+	return nil
+}
