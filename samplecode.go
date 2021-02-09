@@ -1,6 +1,6 @@
 package main
 
-import "github.com/quzhixue-Kimi/gosample/mysqlsample"
+import _ "github.com/quzhixue-Kimi/gosample/mysqlsample"
 
 //func sendData(ch1 chan int) {
 //	for i := 0; i < 10; i++ {
@@ -26,8 +26,9 @@ import "github.com/quzhixue-Kimi/gosample/mysqlsample"
 //}
 
 func main() {
+
 	//	mysqlsample.MySqlSample()
-	mysqlsample.MySqlSample1()
+	//  mysqlsample.MySqlSample1()
 	//jobs := make(chan int, 5)
 	//results := make(chan int, 5)
 
