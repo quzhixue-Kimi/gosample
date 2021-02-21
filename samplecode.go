@@ -1,6 +1,13 @@
 package main
 
-import _ "github.com/quzhixue-Kimi/gosample/mysqlsample"
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http/httputil"
+
+	"github.com/gin-gonic/gin"
+	_ "github.com/quzhixue-Kimi/gosample/mysqlsample"
+)
 
 //func sendData(ch1 chan int) {
 //	for i := 0; i < 10; i++ {
@@ -26,6 +33,33 @@ import _ "github.com/quzhixue-Kimi/gosample/mysqlsample"
 //}
 
 func main() {
+
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+	r.POST("/log1", func(c *gin.Context) {
+		if body, err := ioutil.ReadAll(c.Request.Body); err != nil {
+			fmt.Println(err)
+			return
+		} else {
+			fmt.Println(string(body))
+		}
+	})
+	r.POST("/log", func(c *gin.Context) {
+		if body, err := httputil.DumpRequest(c.Request, true); err != nil {
+			fmt.Println(err)
+			return
+		} else {
+			fmt.Println(string(body))
+		}
+	})
+	if err := r.Run(":3000"); err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	//	mysqlsample.MySqlSample()
 	//  mysqlsample.MySqlSample1()
