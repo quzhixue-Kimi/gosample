@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http/httputil"
@@ -8,6 +9,78 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/quzhixue-Kimi/gosample/mysqlsample"
 )
+
+type Latencies struct {
+	Request int `json:"request"`
+	Kong    int `json:"kong"`
+	Proxy   int `json:"proxy"`
+}
+
+func (l Latencies) String() string {
+	return fmt.Sprintf("[lantencies]request=%v,kong=%v,proxy=%v", l.Request, l.Kong, l.Proxy)
+}
+
+type Service struct {
+	Host           string `json:"host"`
+	CreatedAt      int64  `json:"created_at"`
+	ConnectTimeout int    `json:"connect_timeout"`
+	Id             string `json:"id"`
+	Protocol       string `json:"protocol"`
+	Name           string `json:"name"`
+	ReadTimeout    int    `json:"read_timeout"`
+	Port           int    `json:"port"`
+}
+
+func (s Service) String() string {
+	return fmt.Sprintf("[service]host=%v,id=%v,name=%v,port=%v,protocol=%v", s.Host, s.Id, s.Name, s.Port, s.Protocol)
+}
+
+type Headers struct {
+	Host           string `json:"host"`
+	AcceptEncoding string `json:"accept-encoding"`
+	UserAgent      string `json:"user-agent"`
+	Accept         string `json:"accept"`
+	Connection     string `json:"connection"`
+}
+
+func (h Headers) String() string {
+	return fmt.Sprintf("[headers]host=%v,accept=%v,connection=%v", h.Host, h.Accept, h.Connection)
+}
+
+type Request struct {
+	Headers `json:"headers"`
+	Method  string `json:"method"`
+	Uri     string `json:"uri"`
+	Url     string `json:"url"`
+	Size    int    `json:"size"`
+}
+
+func (r Request) String() string {
+	return fmt.Sprintf("[request]headers=%v,method=%v,uri=%v,url=%v,size=%v", r.Headers, r.Method, r.Uri, r.Url, r.Size)
+}
+
+type Try struct {
+	BalanceLatency int    `json:"balance_latency"`
+	Port           int    `json:"port"`
+	BalanceStart   int    `json:"balance_start"`
+	Ip             string `json:"ip"`
+}
+
+func (t Try) String() string {
+	return fmt.Sprintf("[tries]balance_latency=%v,ip=%v", t.BalanceLatency, t.Ip)
+}
+
+type Result struct {
+	Latencies `json:"latencies"`
+	Service   `json:"service"`
+	Request   `json:"request"`
+	ClientIp  string `json:"client_ip"`
+	Tries     []Try  `json:"tries"`
+}
+
+//func (s Service) String() string {
+//	return ""
+//}
 
 //func sendData(ch1 chan int) {
 //	for i := 0; i < 10; i++ {
@@ -40,15 +113,25 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.POST("/log1", func(c *gin.Context) {
+	r.POST("/log", func(c *gin.Context) {
+		var result Result
 		if body, err := ioutil.ReadAll(c.Request.Body); err != nil {
 			fmt.Println(err)
 			return
 		} else {
-			fmt.Println(string(body))
+			if err = json.Unmarshal(body, &result); err != nil {
+				fmt.Println(err)
+				return
+			} else {
+				fmt.Println(result.Latencies)
+				fmt.Println(result.Service)
+				fmt.Println(result.Tries)
+				fmt.Println(result.Request)
+				fmt.Println(result.Headers)
+			}
 		}
 	})
-	r.POST("/log", func(c *gin.Context) {
+	r.POST("/log1", func(c *gin.Context) {
 		if body, err := httputil.DumpRequest(c.Request, true); err != nil {
 			fmt.Println(err)
 			return

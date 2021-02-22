@@ -128,7 +128,7 @@ func exec1(e Employee1, updated bool) {
 }
 */
 
-func trans() {
+func Trans() {
 	if tx, err := db1.Beginx(); err != nil {
 		log.Fatalf("error occur %v\n", err)
 		return
@@ -156,5 +156,5 @@ func MySqlSample1() {
 	//exec1(e, true)
 	queryWithStmt1(1)
 	fmt.Println("=======================test tran========================")
-	//trans()
+	//Trans()
 }
