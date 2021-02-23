@@ -78,10 +78,6 @@ type Result struct {
 	Tries     []Try  `json:"tries"`
 }
 
-//func (s Service) String() string {
-//	return ""
-//}
-
 //func sendData(ch1 chan int) {
 //	for i := 0; i < 10; i++ {
 //		ch1 <- i
