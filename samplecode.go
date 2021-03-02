@@ -10,6 +10,23 @@ import (
 	_ "github.com/quzhixue-Kimi/gosample/mysqlsample"
 )
 
+type People struct {
+	Name string
+	Age  int
+}
+
+func (p *People) String() string {
+	return fmt.Sprintf("[People]name=%v,age=%v", p.Name, p.Age)
+}
+
+func (p *People) sayGoodBye() string {
+	return fmt.Sprintf("%v says goodbye to u!", p.Name)
+}
+
+func (p People) sayHello(name string) {
+	fmt.Println(name + " says hello to u!")
+}
+
 type Latencies struct {
 	Request int `json:"request"`
 	Kong    int `json:"kong"`
@@ -102,6 +119,14 @@ type Result struct {
 //}
 
 func main() {
+
+	p := &People{
+		Name: "Kimi",
+		Age:  37,
+	}
+	fmt.Println(p)
+	p.sayHello(p.Name)
+	fmt.Println(p.sayGoodBye())
 
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
