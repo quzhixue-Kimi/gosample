@@ -33,7 +33,7 @@ type Latencies struct {
 	Proxy   int `json:"proxy"`
 }
 
-func (l Latencies) String() string {
+func (l *Latencies) String() string {
 	return fmt.Sprintf("[lantencies]request=%v,kong=%v,proxy=%v", l.Request, l.Kong, l.Proxy)
 }
 
@@ -48,7 +48,7 @@ type Service struct {
 	Port           int    `json:"port"`
 }
 
-func (s Service) String() string {
+func (s *Service) String() string {
 	return fmt.Sprintf("[service]host=%v,id=%v,name=%v,port=%v,protocol=%v", s.Host, s.Id, s.Name, s.Port, s.Protocol)
 }
 
@@ -60,19 +60,19 @@ type Headers struct {
 	Connection     string `json:"connection"`
 }
 
-func (h Headers) String() string {
+func (h *Headers) String() string {
 	return fmt.Sprintf("[headers]host=%v,accept=%v,connection=%v", h.Host, h.Accept, h.Connection)
 }
 
 type Request struct {
-	Headers `json:"headers"`
-	Method  string `json:"method"`
-	Uri     string `json:"uri"`
-	Url     string `json:"url"`
-	Size    int    `json:"size"`
+	*Headers `json:"headers"`
+	Method   string `json:"method"`
+	Uri      string `json:"uri"`
+	Url      string `json:"url"`
+	Size     int    `json:"size"`
 }
 
-func (r Request) String() string {
+func (r *Request) String() string {
 	return fmt.Sprintf("[request]headers=%v,method=%v,uri=%v,url=%v,size=%v", r.Headers, r.Method, r.Uri, r.Url, r.Size)
 }
 
@@ -83,16 +83,16 @@ type Try struct {
 	Ip             string `json:"ip"`
 }
 
-func (t Try) String() string {
+func (t *Try) String() string {
 	return fmt.Sprintf("[tries]balance_latency=%v,ip=%v", t.BalanceLatency, t.Ip)
 }
 
 type Result struct {
-	Latencies `json:"latencies"`
-	Service   `json:"service"`
-	Request   `json:"request"`
-	ClientIp  string `json:"client_ip"`
-	Tries     []Try  `json:"tries"`
+	*Latencies `json:"latencies"`
+	*Service   `json:"service"`
+	*Request   `json:"request"`
+	ClientIp   string `json:"client_ip"`
+	Tries      []Try  `json:"tries"`
 }
 
 //func sendData(ch1 chan int) {
@@ -135,7 +135,7 @@ func main() {
 		})
 	})
 	r.POST("/log", func(c *gin.Context) {
-		var result Result
+		var result *Result
 		if body, err := ioutil.ReadAll(c.Request.Body); err != nil {
 			fmt.Println(err)
 			return
@@ -149,6 +149,7 @@ func main() {
 				fmt.Println(result.Tries)
 				fmt.Println(result.Request)
 				fmt.Println(result.Headers)
+				fmt.Println(result.ClientIp)
 			}
 		}
 	})
