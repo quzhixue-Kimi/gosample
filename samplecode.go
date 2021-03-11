@@ -95,6 +95,10 @@ type Result struct {
 	Tries      []Try  `json:"tries"`
 }
 
+func (r *Result) String() string {
+	return fmt.Sprintf("[result]latencies=%v,service=%v,request=%v", r.Latencies, r.Service, r.Request)
+}
+
 //func sendData(ch1 chan int) {
 //	for i := 0; i < 10; i++ {
 //		ch1 <- i
@@ -144,12 +148,13 @@ func main() {
 				fmt.Println(err)
 				return
 			} else {
-				fmt.Println(result.Latencies)
-				fmt.Println(result.Service)
-				fmt.Println(result.Tries)
-				fmt.Println(result.Request)
-				fmt.Println(result.Headers)
-				fmt.Println(result.ClientIp)
+				fmt.Println(result)
+				//fmt.Println(result.Latencies)
+				//fmt.Println(result.Service)
+				//fmt.Println(result.Tries)
+				//fmt.Println(result.Request)
+				//fmt.Println(result.Headers)
+				//fmt.Println(result.ClientIp)
 			}
 		}
 	})
