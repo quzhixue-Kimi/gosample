@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http/httputil"
 
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/quzhixue-Kimi/gosample/mysqlsample"
 )
@@ -124,6 +126,17 @@ func (r *Result) String() string {
 
 func main() {
 
+	if req, err := http.Get("http://localhost:3000/hello"); err != nil {
+		fmt.Println(err)
+	} else {
+		defer req.Body.Close()
+		if body, err := ioutil.ReadAll(req.Body); err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println(string(body))
+		}
+	}
+
 	p := &People{
 		Name: "Kimi",
 		Age:  37,
@@ -166,7 +179,7 @@ func main() {
 			fmt.Println(string(body))
 		}
 	})
-	if err := r.Run(":3000"); err != nil {
+	if err := r.Run(":3030"); err != nil {
 		fmt.Println(err)
 		return
 	}
