@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -135,6 +136,23 @@ func main() {
 		} else {
 			fmt.Println(string(body))
 		}
+	}
+
+	body := []byte(`{"name":"aland", "age":35}`)
+	if req, err := http.Post("http://localhost:3000/log", "application/json", bytes.NewBuffer(body)); err != nil {
+		fmt.Println(err)
+	} else {
+		if body, err := ioutil.ReadAll(req.Body); err != nil {
+			fmt.Println(err)
+		} else {
+			var people *People
+			if err := json.Unmarshal(body, &people); err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println(people)
+			}
+		}
+		fmt.Println(req.StatusCode)
 	}
 
 	p := &People{
